@@ -27,19 +27,18 @@ type FormField = keyof ArticleStateType;
 export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 	const { formState, onFormChange, onApply, onReset } = props;
 
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
 	const sidebarRef = useRef<HTMLDivElement>(null);
 
-	// Закрытие сайдбара при клике вне его области
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
-				isOpen &&
+				isMenuOpen &&
 				sidebarRef.current &&
 				!sidebarRef.current.contains(event.target as Node)
 			) {
-				setIsOpen(false);
+				setIsMenuOpen(false);
 			}
 		};
 
@@ -47,7 +46,7 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
-	}, [isOpen]);
+	}, [isMenuOpen]);
 
 	const handleOptionChange = (field: FormField) => (option: OptionType) => {
 		onFormChange({
@@ -67,11 +66,11 @@ export const ArticleParamsForm = (props: ArticleParamsFormProps) => {
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
+			<ArrowButton isOpen={isMenuOpen} onClick={() => setIsMenuOpen(!isMenuOpen)} />
 			<aside
 				ref={sidebarRef}
 				className={clsx(styles.container, {
-					[styles.container_open]: isOpen,
+					[styles.container_open]: isMenuOpen,
 				})}>
 				<form
 					className={styles.form}
